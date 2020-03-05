@@ -16,6 +16,26 @@ dictStock = {100: {'naam': 't-shirt', 'prijs': 18},
 def hello_world():
     return 'ga naar de API url'
 
+@app.route('/api/v1/products')
+def products():
+    return dictStock, 200
+
+@app.route('/api/v1/payment', methods=['POST'])
+def payment():
+    try:
+        product = request.form
+        product_id = int(product["product"])
+        aantal = int(product["aantal"])
+        if(0 < aantal < 100 and product_id in dictStock.keys()):
+            prijs = dictStock[product_id]["prijs"]
+            print (f"{dictStock[product_id]['naam']} --> Besteld: {aantal}, Totaalprijs: {prijs*aantal}")
+            # 201: Element is goed aangemaakt
+            return jsonify(status="succes"), 201
+        else:
+            return jsonify(status="error"), 400
+    except Exception as e:
+        print(f"Fout: {ex}")
+        return jsonify(status="error"), 500
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
