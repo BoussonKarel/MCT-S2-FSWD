@@ -41,7 +41,7 @@ def treinen():
             gegevens["vertraging"],
             gegevens["afgeschaft"]
             )
-        return jsonify(treinid=data), 201
+        return jsonify(treinidS=data), 201
 
 
 @app.route(endpoint+'/treinen/<trein_id>', methods=['GET', 'PUT', 'DELETE'])

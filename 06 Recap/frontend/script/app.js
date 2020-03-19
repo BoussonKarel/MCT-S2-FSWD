@@ -145,7 +145,7 @@ const getTrainsWithDestination = function(destinationID) {
 }
 //#endregion
 
-//#region ***  Event Listeners - listenTo___ ***
+//#region ***  Event Listeners - listenTo___ ***S
 const listenToClickDestination = function() {
   const buttons = document.querySelectorAll('.js-station');
   for (const btn of buttons) {
@@ -162,8 +162,9 @@ const listenToClickRemoveTrain = function() {
   const buttons = document.querySelectorAll('.c-traject__delete-symbol');
   for (const btn of buttons) {
     btn.addEventListener('click', function() {
-      const selectedTrain = this.getAttribute('data-train-id');
+      const selectedTrainID = this.getAttribute('data-train-id');
 
+      console.log(`DELETE: Trein ${selectedTrainID}`)
       handleData(`http://127.0.0.1:5000/api/v1/treinen/${selectedTrain}`, callbackRemovedTrain, null, 'DELETE');
     });
   }
