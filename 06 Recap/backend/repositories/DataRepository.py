@@ -55,5 +55,5 @@ class DataRepository:
     #########  Bestemmingen  #########
     @staticmethod
     def read_bestemmingen():
-        sql = "SELECT * FROM bestemmingen"
+        sql = "SELECT * FROM bestemmingen ORDER BY stad"
         return Database.get_rows(sql)
