@@ -2,6 +2,7 @@
 
 const insertKlaar = function (jsonObject) {
   console.log(jsonObject);
+  document.querySelector('.js-result').innerHTML = `Klant met id ${jsonObject.KlantID} toegevoegd.`
 };
 
 const init = function () {
@@ -15,6 +16,8 @@ const init = function () {
       VNaam: document.querySelector("#VNaam").value
     });
     console.log(body);
+
+    handleData('http://localhost:5000/api/v1/klanten', insertKlaar, null, 'POST', body)
   });
 };
 

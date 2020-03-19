@@ -13,20 +13,29 @@ class DataRepository:
     #########  Klanten  #########
     @staticmethod
     def read_klanten():
-        pass
+        sql = "SELECT * FROM tblklant"
+        return Database.get_rows(sql)
 
     @staticmethod
     def read_klant(KlantID):
-        pass
+        sql = "SELECT * FROM tblKlant WHERE KlantID = %s"
+        params = [KlantID]
+        return Database.get_one_row(sql, params)
 
     @staticmethod
     def create_klant(naam, voornaam, straat, nr, postcode, gemeente):
-        pass
+        sql = "INSERT INTO tblKlant (Fnaam, Vnaam, Straat, Nummer, Postcode, Gemeente) VALUES (%s, %s, %s, %s, %s, %s)"
+        params = [naam, voornaam, straat, nr, postcode, gemeente]
+        return Database.execute_sql(sql, params)
 
     @staticmethod
     def update_klant(naam, voornaam, straat, nr, postcode, gemeente, klantid):
-        pass
+        sql = "UPDATE tblklant SET fnaam=%s, vnaam=%s, straat=%s, nummer=%s, postcode=%s, gemeente=%s WHERE klantid=%s"
+        params = [naam, voornaam, straat, nr, postcode, gemeente, klantid]
+        return Database.execute_sql(sql, params)
 
     @staticmethod
     def delete_klant(klantid):
-        pass
+        sql = "DELETE FROM tblKlant WHERE KlantID=%s"
+        params = [klantid]
+        return Database.execute_sql(sql, params)
