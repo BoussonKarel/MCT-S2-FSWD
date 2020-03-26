@@ -1,7 +1,7 @@
 let currentDestinationID; // is geen DOM reference maar globale variabele
 
 //#region ***  DOM references ***
-let html_destinationHolder, html_routeHolder, html_selectedCity, html_destinationSelect, html_adaptTrain;
+let html_destinationHolder, html_routeHolder, html_selectedCity, html_destinationSelect, html_adaptTrain, html_delayTrain;
 //#endregion
 
 //#region ***  Callback-Visualisation - show___ ***
@@ -147,13 +147,16 @@ const callbackAdaptTrainError = function(data) {
 
 const callbackUpdateDelay = function(data) {
   console.log(data);
-  //window.location = 'index.html';
+  window.location = 'index.html';
 };
 //#endregion
 
 //#region ***  Data Access - get___ ***
 const getDestinations = function() {
   handleData("http://127.0.0.1:5000/api/v1/bestemmingen", showDestinations);
+};
+const getDestinationsForUpdate = function() {
+  handleData("http://127.0.0.1:5000/api/v1/bestemmingen", showDestinationsForUpdate);
 };
 const getTrain = function(treinid) {
   handleData(`http://127.0.0.1:5000/api/v1/treinen/${treinid}`, showTrain);
@@ -202,10 +205,44 @@ const listenToClickRemoveTrain = function() {
     });
   }
 };
+
+const listenToClickAdaptTrain = function() {
+  let treinid = document.querySelector("#idtrein").value;
+  const jsonObject = {
+    idtrein:      treinid,
+    afgeschaft:   document.querySelector("#afgeschaft").value,
+    bestemmingID: document.querySelector("#bestemmingID").value,
+    spoor:        document.querySelector("#spoor").value,
+    vertraging:   document.querySelector("#vertraging").value,
+    vertrek:      document.querySelector("#vertrek").value
+  }
+  console.log(jsonObject);
+  handleData(`http://127.0.0.1:5000/api/v1/treinen/${id}`, callbackAdaptTrein, null, "PUT", JSON.stringify(jsonObject));
+};
+
+const listenToClickDelay = function(btn) {
+  let urlParams = new URLSearchParams(window.location.search);
+  let id = urlParams.get("TreinID");
+  let delay = btn.getAttribute("data-delay");
+
+  const jsonObject = {
+    vertraging: delay
+  }
+
+  handleData(`http://127.0.0.1:5000/api/v1/treinen/${id}/vertraging`, callbackUpdateDelay, null, "PUT", JSON.stringify(jsonObject));
+}
 //#endregion
 
 //#region ***  INIT / DOMContentLoaded  ***
 const init = function() {
+  // if (document.querySelector(".js-pagina1")) {
+  //   functie_die_ik_enkel_op_pagina1_nodig_heb();
+  // } else {
+  //   if (document.querySelector(".js-pagina2")) {
+  //     functie_die_ik_enkel_op_pagina2_nodig_heb();
+  //   }
+  // }
+
   console.log("🚂", "https://www.youtube.com/watch?v=8oVTXSntnA0");
   // Get some DOM, we created empty earlier.
   html_destinationHolder = document.querySelector(".js-destinations");
@@ -213,11 +250,42 @@ const init = function() {
   html_selectedCity = document.querySelector(".js-departure");
   html_destinationSelect = document.querySelector(".js-destination");
   html_adaptTrain = document.querySelector(".js-adapttrain");
+  html_delayTrain = document.querySelector(".js-delaytrain");
 
   if (html_destinationHolder) {
     //deze code wordt gestart vanaf index.html
     getDestinations();
     listenToClickAddTrain();
+  }
+
+  if(html_adaptTrain){
+    let urlParams = new URLSearchParams(window.location.search);
+    let treinid = urlParams.get("TreinID");
+    if (treinid) {
+      // Bestemmingen ophalen voor in de dropdown
+      getDestinationsForUpdate();
+
+      // Info over trein ophalen --> Staat nu in getDestinationsForUpdate ^
+      // getTrain(treinid)
+
+      // Event koppelen aan knop om formulier te versturen.
+      document.querySelector(".js-adapttrain-btn").addEventListener("click", function() {
+        listenToClickAdaptTrain();
+      });
+    } else{
+      window.location.href = "index.html";
+    }
+  }
+
+  if (html_delayTrain) {
+    let buttons = document.querySelectorAll(".js-delay-option");
+
+    for (const btn of buttons) {
+      btn.addEventListener("click", function(e) {
+        //gebruik van this
+        listenToClickDelay(this);
+      });
+    }
   }
 };
 
