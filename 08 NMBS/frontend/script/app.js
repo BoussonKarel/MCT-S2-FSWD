@@ -6,7 +6,7 @@ const copyright =
   '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Tiles style by <a href="https://www.hotosm.org/" target="_blank">Humanitarian OpenStreetMap Team</a> hosted by <a href="https://openstreetmap.fr/" target="_blank">OpenStreetMap France</a>';
 
 //#region ***  DOM references ***
-let html_destinationHolder, html_routeHolder, html_selectedCity, html_destinationSelect, html_adaptTrain;
+let html_destinationHolder, html_routeHolder, html_selectedCity, html_destinationSelect, html_adaptTrain, html_destinationMap;
 //#endregion
 
 //#region ***  Callback-Visualisation - show___ ***
@@ -27,7 +27,6 @@ const showDestinations = function(jsonObject) {
   }
   listenToClickDestination();
 };
-
 const showDestinationsForUpdate = function(jsonObject) {
   //Toon dropdownbox
   console.log("****");
@@ -44,7 +43,19 @@ const showDestinationsForUpdate = function(jsonObject) {
   let treinid = urlParams.get("TreinID");
   getTrain(treinid);
 };
+const showDestinationsForMap = function(jsonObject) {
+  console.log(jsonObject);
+  //Toon bestemmingen op de kaart
+  htmlstring_listitems = `<ul class="c-add-locations">`;
 
+  for (const bestemming of jsonObject.bestemmingen) {
+    htmlstring_listitems += `<li class="c-show-location js-location" data-lat="${bestemming.latitude}" data-long="${bestemming.longitude}">${bestemming.stad}</li>`;
+  }
+  htmlstring_listitems += `</ul>`;
+  document.querySelector(".js-locations").innerHTML = htmlstring_listitems;
+
+  listenToClickShowOnMap();
+};
 const showTrainsOnDestinations = function(jsonObject) {
   if (jsonObject.length === 0) {
     html_routeHolder.innerHTML = "Geen treinen.";
@@ -107,7 +118,6 @@ const showTrainsOnDestinations = function(jsonObject) {
 const showCleanTrains = function() {
   html_routeHolder.innerHTML = "Maak een keuze in de linkerkolom";
 };
-
 const showTrain = function(jsonObject) {
   console.log(jsonObject);
   document.querySelector("#idtrein").value = jsonObject.idtrein;
@@ -166,6 +176,9 @@ const getDestinations = function() {
 const getDestinationsForUpdate = function() {
   handleData("http://127.0.0.1:5000/api/v1/bestemmingen", showDestinationsForUpdate);
 };
+const getDestinationsForMap = function() {
+  handleData("http://127.0.0.1:5000/api/v1/bestemmingen", showDestinationsForMap);
+};
 const getTrain = function(treinid) {
   handleData(`http://127.0.0.1:5000/api/v1/treinen/${treinid}`, showTrain);
 };
@@ -183,6 +196,19 @@ const listenToClickDestination = function() {
       const id = btn.getAttribute("data-destination-id");
       currentDestinationID = id;
       getTrainsOnDestinations(id);
+    });
+  }
+};
+
+const listenToClickShowOnMap = function() {
+  const bestemmingen = document.querySelectorAll(".js-location");
+
+  for (const bestemming of bestemmingen) {
+    bestemming.addEventListener("click", function() {
+      const latitude = this.getAttribute('data-lat');
+      const longitude = this.getAttribute('data-long');
+      const stad = this.innerHTML;
+      maakMarker(latitude, longitude, stad);
     });
   }
 };
@@ -250,6 +276,7 @@ const init = function() {
   html_selectedCity = document.querySelector(".js-departure");
   html_destinationSelect = document.querySelector(".js-destination");
   html_adaptTrain = document.querySelector(".js-adapttrain");
+  html_destinationMap = document.querySelector(".js-map");
 
   if (html_destinationHolder) {
     //deze code wordt gestart vanaf index.html
@@ -286,9 +313,23 @@ const init = function() {
   //deze code wordt enkel gestart vanaf bestemmingen.html
   if (document.querySelector(".js-locations")) {
     //Maak een nieuwe kaart aan
+    map = L.map('mapid').setView([50.8503, 4.3517], 9);
+    L.tileLayer(provider, { attribution: copyright }).addTo(map);
+
+    layergroup = L.layerGroup().addTo(map);
+
     //Haal de bestemmingen op die je op de kaart wil weergeven
+    getDestinationsForMap();
   }
 };
 
 document.addEventListener("DOMContentLoaded", init);
 //#endregion
+
+const maakMarker = function(lat, long, naam) {
+  // console.log(coords);
+  const arrCoords = [ lat, long ];
+  layergroup.clearLayers();
+  let marker = L.marker(arrCoords).addTo(layergroup);
+  marker.bindPopup(`<h3>Station in ${naam}</h3>`);
+}
