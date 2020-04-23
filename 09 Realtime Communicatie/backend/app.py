@@ -29,7 +29,7 @@ def progress_today():
     if request.method == 'DELETE':
         data = DataRepository.delete_total_progress(date.today())
         if data > 0:
-            emit("B2F_clear", {'amount': 0}, broadcast = True)
+            socketio.emit("B2F_clear", {'amount': 0}, broadcast = True)
             return jsonify(status="success", row_count=data), 201
         else:
             return jsonify(status="no delete", row_count=data), 201

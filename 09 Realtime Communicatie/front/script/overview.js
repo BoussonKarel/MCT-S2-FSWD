@@ -32,6 +32,14 @@ const init = function() {
     html_clearButton.addEventListener("click", function() {
         handleData("http://127.0.0.1:5000/api/v1/progress/today", callbackDeleted, null, "DELETE");
     });
+
+    socket.on("B2F_add_progress", function(value) {
+        getOverview();
+    });
+
+    socket.on("B2F_clear", function(value) {
+        getOverview();
+    });
 }
 
 document.addEventListener("DOMContentLoaded", init);
