@@ -1,6 +1,5 @@
 venv_fswd/
 **/.DS_Store
 **/__pycache__
-FSWD_7_Demo/**
-FSWD_5_Demo/**
+**Demo
 **.zip
