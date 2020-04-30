@@ -24,9 +24,9 @@ const listenToUI = function () {
       // else { nieuwestatus = 0 }
 
       const room = document.querySelector(`.js-room[data-idlamp='${id}']`);
-      room.classList.remove("c-room--on");
-      room.classList.remove("c-room--wait");
-      room.classList.add("c-room--wait");
+      room.classList.remove('c-room--on');
+      room.classList.remove('c-room--wait');
+      room.classList.add('c-room--wait');
       
       socket.emit('F2B_switch_light', {'lampid': id, 'new_status': nieuwestatus});
     });
@@ -45,12 +45,12 @@ const listenToSocket = function () {
       const room = document.querySelector(`.js-room[data-idlamp="${lamp.id}"]`);
       if (room) {
         const knop = room.querySelector('.js-power-btn');
-        knop.setAttribute("data-statuslamp", lamp.status);
+        knop.setAttribute('data-statuslamp', lamp.status);
 
-        room.classList.remove("c-room--on");
-        room.classList.remove("c-room--wait");
+        room.classList.remove('c-room--on');
+        room.classList.remove('c-room--wait');
         if (lamp.status == 1) {
-          room.classList.add("c-room--on");
+          room.classList.add('c-room--on');
         }
       }
     }
@@ -64,15 +64,19 @@ const listenToSocket = function () {
     const room = document.querySelector(`.js-room[data-idlamp="${lamp.id}"]`);
     if (room) {
       const knop = room.querySelector('.js-power-btn');
-      knop.setAttribute("data-statuslamp", lamp.status);
+      knop.setAttribute('data-statuslamp', lamp.status);
 
-      room.classList.remove("c-room--on");
-      room.classList.remove("c-room--wait");
+      room.classList.remove('c-room--on');
+      room.classList.remove('c-room--wait');
       if (lamp.status == 1) {
-        room.classList.add("c-room--on");
+        room.classList.add('c-room--on');
       }
     }
   });
+
+  socket.on('B2F_alles_uit', function(payload) {
+    console.log('Alle lampen zijn automatisch uitgezet');
+  })
 };
 
 document.addEventListener('DOMContentLoaded', function () {

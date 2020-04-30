@@ -4,6 +4,9 @@ from flask_socketio import SocketIO
 from flask_cors import CORS
 
 
+import time
+import threading
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'FSWD!321lOpç'
 
@@ -12,7 +15,18 @@ CORS(app)
 
 
 # THREAD
+# pip uninstall eventlet
+# pip install gevent + pip install gevent-websocket
+def alle_lichten_uit():
+    while True:
+        print("*** We zetten alles uit ***")
+        DataRepository.update_status_alle_lampen(0)
+        status = DataRepository.read_status_lampen()
+        socketio.emit("B2F_alles_uit", {'status': 'lampen uit'}, broadcast=True)
+        socketio.emit("B2F_status_lampen", {'lampen': status}, broadcast=True)
+        time.sleep(10)
 
+threading.Timer(10, alle_lichten_uit).start()
 
 # API ENDPOINTS
 @app.route('/')
@@ -43,4 +57,5 @@ def switch_light(payload):
     
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True, host='0.0.0.0')
+    # Debug op False (voor threading, anders werkt het niet heel goed)
+    socketio.run(app, debug=False, host='0.0.0.0')

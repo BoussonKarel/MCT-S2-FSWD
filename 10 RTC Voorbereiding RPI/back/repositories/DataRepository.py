@@ -29,7 +29,7 @@ class DataRepository:
 
     @staticmethod
     def update_status_alle_lampen(status):
-        sql = "UPDATE lamen SET status = %s"
+        sql = "UPDATE lampen SET status = %s"
         params = [ status ]
         return Database.execute_sql(sql, params)
 
