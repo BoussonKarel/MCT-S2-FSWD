@@ -1,9 +1,9 @@
 [connector_python]
-user = root_fswd
+user = root
 host = 127.0.0.1
 port = 3306
-password = root_fswd
-database = homecontrol
+password = D4taM4nag3m!nt
+database = water
 
 [application_config]
 driver = 'SQL Server'
