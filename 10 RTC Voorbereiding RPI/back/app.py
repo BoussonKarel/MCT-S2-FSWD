@@ -5,7 +5,7 @@ from flask_cors import CORS
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'Hier mag je om het even wat schrijven, zolang het maar geheim blijft en een string is'
+app.config['SECRET_KEY'] = 'FSWD!321lOpç'
 
 socketio = SocketIO(app, cors_allowed_origins="*")
 CORS(app)
@@ -21,7 +21,26 @@ def hallo():
 
 
 # SOCKET IO
+@socketio.on("connect")
+def on_connect():
+    print("A new client connected")
+    status = DataRepository.read_status_lampen()
+    socketio.emit("B2F_status_lampen", { 'lampen': status })
 
+@socketio.on("F2B_switch_light")
+def switch_light(payload):
+    id = payload["lamp_id"]
+    new_status = payload["new_status"]
+
+    print("Licht gaat aan/uit")
+
+    DataRepository.update_status_lamp(id, new_status)
+    # Hardware LED
+
+    status = DataRepository.read_status_lamp_by_id(id)
+
+    socketio.emit("B2F_verandering_lamp", {"lamp": status})
+    
 
 if __name__ == '__main__':
     socketio.run(app, debug=True, host='0.0.0.0')
