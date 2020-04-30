@@ -29,7 +29,7 @@ def on_connect():
 
 @socketio.on("F2B_switch_light")
 def switch_light(payload):
-    id = payload["lamp_id"]
+    id = payload["lampid"]
     new_status = payload["new_status"]
 
     print("Licht gaat aan/uit")
