@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        let x = '';
+        console.log(x);
+
+        const ikHover = function() {
+            // console.log('Hover!');
+            document.querySelector('#id').innerHTML = 'Hover!';
+        }
+
+        const init = function () {
+            // NAAM VAN FUNCTIE ZONDER HAAKJES > ANDERS DIRECT UITGEVOERD
+            const htmlTag = document.querySelector('#id');
+            htmlTag.addEventListener("mouseover", ikHover);
+        }
+
+        document.addEventListener("DOMContentLoaded", init);
+    </script>
+</head>
+<body>
+    <div id="id">Dit is mijn eerste div</div>
+    
+</body>
+</html>

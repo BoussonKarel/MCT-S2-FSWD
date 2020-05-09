@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Document</title>
+    </head>
+    <body>
+        <div class="klasse">
+            Dit is een stukje tekst
+        </div>
+        <div class="klasse">
+            Dit is een stukje tekst
+        </div>
+        <div id="id">
+            Nog een stuk tekst
+        </div>
+
+        <script>
+            var i = 1;
+            console.log(i);
+
+            // let bestTrack = 'Web App Developer';
+            // let naam2;
+            // const naam3 = 'Jantje';
+
+            // const ditIsMijnNaam = function() {
+            //     naam3 = 'Karel';
+            //     return naam3;
+            // };
+
+            // console.log(ditIsMijnNaam());
+
+            let naam;
+            console.log(naam);
+
+            // Controlestructuren: if else
+            const leeftijd = 18;
+            if (leeftijd < 18) {
+                console.log('Je bent nog een jonkie');
+            } else {
+                if (leeftijd > 50) {
+                    console.log('Je bent al een oude zak');
+                } else {
+                    console.log('Je bent geen jonkie meer');
+                }
+            }
+
+            // Controlestructuren: switch
+            const kleur = 'green';
+            switch (kleur) {
+                case 'red':
+                    console.log("'t is rood");
+                    break;
+                case 'blue':
+                    console.log("'t is blauw");
+                    break;
+                case 'hotpink':
+                    console.log("'t is hotpink");
+                    break;
+                default:
+                    console.log("'t is " + kleur);
+            }
+
+            // DOM: iets wegschrijven nr de html
+            document.write('Hallokes');
+
+            // Verander de inhoud van een element (eerste die voorkomt!)
+            document.querySelector('#id').innerHTML = 'Dit is een ander stuk tekst';
+
+            // Verander de inhoud van alle elementen met die klasse
+            // .innerHTML werkt niet, we zullen moeten erdoorheen itereren
+            // document.querySelectorAll('.klasse').innerHTML = 'Keb ze allemaal nu';
+            const divs = document.querySelectorAll('.klasse');
+
+            // for (div in/of divs)
+            // in: werkt met de index
+
+            for (div in divs) {
+                divs[div].innerHTML = 'Kleur is' + kleur;
+                // String + variabele > tussen backticks: ALT GR + µ
+                divs[div].innerHTML = `Kleur is ${kleur}`
+            }
+
+            // for (div of divs) {
+            //     div.innerHTML = 'Klasse';
+            // }
+
+            // for(let i = 0; i < divs.length; i++) {
+            //     divs[i].innerHTML = 'Klasse';
+            // }
+        </script>
+    </body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Formulieren - Oefening1</title>
+    <link href="style/style.css" rel="stylesheet" type="text/css" />
+    <script src="script/script.js"></script>
+  </head>
+  <body>
+    <form action="https://www.diero.be/MCT/showpost.php" method="post">
+      <fieldset>
+        <legend>Uw voorkeuren</legend>
+        <p>Wat vind u het meest belangrijke aan een website?</p>
+        <input type="checkbox" name="voorkeur[]" id="uitgever" value="uitgever">
+        <label for="uitgever">De bekendheid met de uitgever van de website;</label>
+        <br>
+        <input type="checkbox" name="voorkeur[]" id="wegwijs" value="wegwijs">
+        <label for="wegwijs">Het gemakkelijk wegwijs geraken op de website;</label>
+        <br><br>
+        <p>Hamvraag: hoe beoordeelt u mijn website?</p>
+        <input type="radio" name="beoordeling[]" id="zeergoed" value="zeer goed" checked>
+        <label for="zeergoed">Zeer goed</label>
+        <input type="radio" name="beoordeling[]" id="goed" value="goed">
+        <label for="goed">Goed</label>
+        <input type="radio" name="beoordeling[]" id="matig" value="matig">
+        <label for="matig">Matig</label>
+        <input type="radio" name="beoordeling[]" id="gezakt" value="gezakt">
+        <label for="gezakt">Gezakt</label>
+        <br><br><br>
+        <label for="score">Kan u dit uitdrukken in een score op 10?</label><br>
+        <input type="range" name="score" id="score" value="8" min="0" max="10" step="0.5">
+        <output class="js-output">8 / 10</output>
+      </fieldset>
+      <br>
+      <input type="submit" value="Geef je mening!">
+      <!-- type "reset" wist alles -->
+      <input type="reset" value="Wissen">
+    </form>
+  </body>
+</html>
